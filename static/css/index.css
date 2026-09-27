@@ -1,0 +1,688 @@
+/* SplatSuRe — page-specific styles.
+ *
+ * Layout/grid come from the purged Bulma subset (bulma.min.css); icons from
+ * icons.css; the results carousel from slideshow.css; the PDF viewer from
+ * pdf-modal.css. This file holds only what is particular to this page: the
+ * teaser comparison slider, the before/after image sliders, and the hero text.
+ *
+ * Headings fall back to the self-hosted Noto Sans while Google Sans loads
+ * asynchronously, so the async swap is a font change rather than invisible text.
+ */
+
+body {
+  font-family: 'Noto Sans', sans-serif;
+}
+
+/* ---- Reducing the heading reflow ----
+ *
+ * Google Sans is proprietary, so it cannot be self-hosted and has to arrive from
+ * Google's CDN after first paint. Headings therefore render once in the fallback
+ * and again in Google Sans, and because the two have different metrics the title
+ * re-wrapped as it swapped.
+ *
+ * This is a metrics-matched fallback: Noto Sans is ~4% wider per character than
+ * Google Sans at the same size, so nudging it down closes most of the gap and the
+ * swap becomes a change of shape rather than a change of layout. Google Sans
+ * itself is unaffected; this face is only ever used while it is in flight.
+ */
+@font-face {
+  font-family: 'Google Sans Fallback';
+  src: local('Noto Sans'), local('Helvetica Neue'), local('Arial');
+  size-adjust: 96%;
+  ascent-override: 95%;
+  descent-override: 24%;
+  line-gap-override: 0%;
+}
+
+/* Keeps a phrase from being split across lines — but only where the phrase can
+   actually fit. Below ~360px a long method name is wider than the viewport even at
+   the clamped title size, and an unbreakable span that wide forces the whole page
+   to scroll sideways. A very small screen gets a mid-phrase break instead, which is
+   the lesser problem. */
+.nowrap {
+  white-space: nowrap;
+}
+
+/* `em`, not `px`, and deliberately generous. The span overflows when its width — which
+   scales with the *text size* — exceeds its column, which scales with the viewport. A px
+   bound therefore covers only one of the two variables: at 200% text the phrase doubles
+   while the column does not, so a 500px window failed where 320px passed, and the excess
+   was clipped unreachably by Bulma's `html { overflow-x: hidden }`. An `em` bound tracks
+   the root font size, so it widens exactly as the text does: 640px at the default size,
+   1280px at 200%. Above it the phrase always fits. */
+@media screen and (max-width: 40em) {
+  .nowrap {
+    white-space: normal;
+  }
+}
+
+/* Force the title's line break at its phrase seam; withdraw it once line one
+   no longer fits, where plain wrapping gives the more even shape. `em` to match
+   `.nowrap`: the phrase scales with text size, the column with the viewport. The
+   `&nbsp;` in the markup, not this rule, is what keeps "for" off a line alone. */
+@media screen and (max-width: 34em) {
+  .title-break {
+    display: none;
+  }
+}
+
+/* ---- Comparison slider (canvas, driven by video_comparison.js) ---- */
+
+.video-compare-container {
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  display: block;
+  line-height: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.video-compare-container canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Only the canvas is meant to be visible; the <video> is just the frame source.
+   resizeAndPlay() sets height:0 on it, but an `aspect-ratio` on the same element
+   would re-derive a height from its width and win, leaving a white band above the
+   canvas inside the rounded container. */
+.video-compare-container video.video {
+  display: block;
+  width: 100%;
+  height: 0;
+}
+
+/* The source is a side-by-side pair: 1952x544, so the visible half is 976x544. That
+   is 1.794, not the 1.778 of 16/9 — close enough to look right, but the mismatch was
+   reserving a box a few pixels off and shifting on init.
+
+   Keeping the true ratio here means the reserved box matches the picture exactly. */
+.video-compare-container canvas.videoMerge {
+  aspect-ratio: 976 / 544;
+}
+
+.videoMerge {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
+  background-size: cover;
+}
+
+/* ---- Hero / teaser ---- */
+
+.footer .icon-link {
+  font-size: 25px;
+  color: var(--text-heading);
+}
+
+/* This page used to lighten the glyph to #363636 on hover, alone among the five —
+   the others leave it at ink and let interactions.css carry the feedback with a lift
+   and a glow. It cannot survive dark mode: #363636 on the #161b22 footer measures
+   1.42:1, so hovering would make the icon vanish rather than respond. Dropped rather
+   than tokenised, which also matches the sibling pages and the rule applied elsewhere
+   in this file that hover feedback must not be *less* visible than rest. */
+
+.link-block a {
+  margin: 5px 0;
+}
+
+/* The publication link buttons are `nowrap` pills in an inline row. At large text sizes a
+   single pill can be wider than its column, and because the row is plain inline flow with
+   `overflow: visible` the excess is clipped by `html { overflow-x: hidden }` rather than
+   wrapping or scrolling — buttons a 200% reader cannot reach. Flexing the row lets the
+   pills wrap onto more lines, and letting a label break is the lesser evil against losing
+   the button entirely. */
+.publication-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.publication-links .button {
+  max-width: 100%;
+  white-space: normal;
+}
+
+/* This page's teaser wrapper is `hero-teaser`, not Bulma's `hero`+`teaser`, so the
+   `.teaser` rules the sibling sites use never matched here. Named for what the markup
+   actually is. */
+.hero-teaser {
+  font-family: 'Google Sans', 'Google Sans Fallback', 'Noto Sans', sans-serif;
+}
+
+.publication-title {
+  color: var(--text-heading);
+  font-family: 'Google Sans', 'Google Sans Fallback', 'Noto Sans', sans-serif;
+  margin-top: -20px;
+}
+
+.publication-authors {
+  color: var(--text-heading);
+  font-family: 'Google Sans', 'Google Sans Fallback', 'Noto Sans', sans-serif;
+}
+
+/* Author names are link-coloured; the affiliation line beneath them is not. Both live
+   in `.publication-authors`, so the institution links carry `.plain-link` and are
+   excluded here — see the note in theme.css. */
+.publication-authors a:not(.plain-link) {
+  color: var(--link) !important;
+}
+
+.publication-venue {
+  color: var(--text-heading);
+  font-weight: bold;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+/* The embedded talk gets the same raised surface as the other media on the page,
+   so the player reads as an inset object rather than a hole cut in the layout.
+   The shadow sits on this wrapper, not the <iframe>: `overflow: hidden` is what
+   clips the player to the rounded corners and would clip a child's shadow, but an
+   element's own shadow still paints outside its clip. */
+.publication-video {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+.publication-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- Results carousel spacing ----
+ *
+ * Each slide is a grid of comparison sliders in Bulma columns. `.column` carries
+ * .75rem of padding all round, and Bulma only cancels the bottom of it via
+ * `.columns:last-child` — which these are not, since the controls follow inside
+ * the slideshow. That left roughly 22px of dead space under the last row of
+ * sliders before the arrows and dots, so the controls read as detached from the
+ * figures they belong to.
+ */
+
+.slideshow .columns.is-multiline {
+  margin-bottom: -0.75rem;
+}
+
+/* The viewport's own padding exists to give the active slide's shadow somewhere to
+   fall; below the track that shadow is already clear of the controls. */
+.slideshow .slideshow-viewport {
+  padding-bottom: 0;
+}
+
+/* ---- Figures ----
+   No shadow or rounding on this page's diagrams. Both the pipeline and disparity
+   figures come straight from the paper and sit on their own white background, so a
+   raised surface outlines the whitespace rather than the content. The comparison
+   sliders and the teaser are rendered imagery and do keep their shadow. */
+
+.paper-figure {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+
+/* Centred and held to less than full width, as it was inline. */
+.figure-centered {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+/* The source is 1400px wide, comfortably more than the ~300px this renders at on a
+   desktop, so it is only ever downscaled. 40% suits the wide column there, but on a
+   phone it left the diagram far smaller than the other figures and too small to
+   read — it gets the full column width instead. */
+.figure-centered img {
+  max-width: 40%;
+  height: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .figure-centered img {
+    max-width: 100%;
+  }
+}
+
+figcaption {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* Footnote under the results. It used to carry a negative top margin, which suited
+   the old carousel's absolutely-positioned dots but collided with the current
+   controls now that they sit in normal flow.
+
+   It also carried `.subtitle.is-6`, whose 1rem beat the 0.9rem here on specificity
+   (two classes to one) and rendered the note at 16px where every caption on the
+   other four pages is 14.4px. Those Bulma classes contributed nothing else, so they
+   are gone rather than fought with. */
+.table-note {
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ---- Before / after image sliders ---- */
+.bal-container-small {
+  position: relative;
+  width: 100%;
+  /* Height comes from an inline `aspect-ratio` stamped per slider from its own image's
+     dimensions. It used to come from the image itself, which meant the box collapsed to
+     nothing until that image decoded — and because off-screen carousel slides never
+     enter the viewport, their lazy images did not even start loading until the slide was
+     stepped to. The first trip round the ring therefore snapped from a zero-height box
+     to a full one, which is the flash; the second trip was smooth because the images
+     were cached. slideshow.js now also promotes those images as soon as the carousel is
+     on screen, so the two fixes are complementary: this reserves the space, that starts
+     the fetch early. */
+  cursor: grab;
+  overflow: hidden;
+  border-radius: 10px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  line-height: 0;
+  /* Prevents small vertical gaps */
+  box-shadow: 0 4px 16px var(--shadow);
+}
+
+/* The selected slide lifts onto a deeper shadow, matching the video carousels on
+   the sibling pages (slideshow.css does this for .video-compare-container). Without
+   it, this page's carousel had a flat shadow on every slide where the others cue
+   the active one. */
+.slideshow-slide.is-active .bal-container-small {
+  box-shadow: 0 8px 28px var(--shadow-raised);
+}
+
+.bal-after {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.bal-after img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.bal-before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 15;
+  /* Deliberately no border on the split edge: at fractional widths it rendered as
+     a faint seam beside the handle rather than a clean division. */
+}
+
+.bal-before-inset {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.bal-before-inset img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* labels */
+.bal-beforePosition,
+.bal-afterPosition {
+  background: #121212;
+  color: #fff;
+  /* The image wrapper sets `line-height: 0` to kill the inline descender gap under
+     the picture, and these chips inherited it — so 17.6px of text sat in a 19.2px box
+     and the descenders and bracket tips painted outside the dark chip, onto the photo,
+     where white measured as low as 4.25:1. The wrapper still needs the 0; the labels
+     do not. */
+  line-height: 1.2;
+  pointer-events: none;
+  border-radius: 0.2rem;
+  padding: 0.6rem 0.75em;
+  font-size: 1.1em;
+  font-weight: normal;
+  user-select: none;
+  z-index: 20;
+}
+
+/* Positioning labels at the bottom, matching original styling */
+.bal-beforePosition {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  /* Pinned bottom-left; top/right are cleared so the shared rule above cannot
+     leave a stale edge set. */
+  top: auto;
+  right: auto;
+}
+
+.bal-afterPosition {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  /* Pinned bottom-right, mirroring .bal-beforePosition. */
+  top: auto;
+  left: auto;
+}
+
+/* Handle + arrows */
+.bal-handle {
+  height: 40px;
+  width: 40px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -20px;
+  margin-top: -20px;
+  border: 2px solid #fff;
+  background: transparent;
+  /* No background to match video handle style */
+  border-radius: 50%;
+  z-index: 20;
+  pointer-events: none;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+  transform: translateX(-50%);
+  margin-left: 0;
+}
+
+/* Re-implement the vertical line using pseudo-elements on the handle */
+.bal-handle::before,
+.bal-handle::after {
+  content: " ";
+  display: block;
+  width: 2px;
+  background: #fff;
+  height: 9999px;
+  /* Large height effectively covers the container */
+  position: absolute;
+  left: 50%;
+  margin-left: -1px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Line going UP from the handle */
+.bal-handle::before {
+  bottom: 50%;
+  margin-bottom: 20px;
+  /* Offset by radius to not cross the circle */
+}
+
+/* Line going DOWN from the handle */
+.bal-handle::after {
+  top: 50%;
+  margin-top: 20px;
+  /* Offset by radius to not cross the circle */
+}
+
+/* Arrow styling */
+.handle-left-arrow,
+.handle-right-arrow {
+  width: 0;
+  height: 0;
+  border: 6px inset transparent;
+  position: absolute;
+  top: 50%;
+  margin-top: -6px;
+}
+
+.handle-left-arrow {
+  border-right: 6px solid #fff;
+  left: 50%;
+  margin-left: -14px;
+}
+
+.handle-right-arrow {
+  border-left: 6px solid #fff;
+  right: 50%;
+  margin-right: -14px;
+}
+
+/* ---- Related work ----
+   The single entry was an unwrapped text node sitting directly under the heading —
+   no <p>, no list — with the paper name and its venue run together in one sentence.
+   The sibling pages already use a `.related-list` whose entries put the title on its
+   own line above the description, with the venue as a quiet badge; this page now
+   matches, which also gives the five `.related-*` selectors in interactions.css
+   something to match. No BibTeX link here: there is one entry and it is not ours. */
+
+.related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.related-item + .related-item {
+  margin-top: 1.5rem;
+}
+
+.related-title {
+  margin-bottom: 0.2rem !important;
+}
+/* The venue sits on its own line under the title, so a long paper name never has to
+   share a baseline with it. */
+.related-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem !important;
+}
+
+.related-title > a:first-child {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--link);
+}
+
+/* The secondary link beside the venue badge. Quiet by default, with the underline
+   appearing on hover so it is discoverable without shouting on every entry. Matches the
+   sibling sites, where this slot holds a BibTeX link; here it points at the challenge
+   paper's CVF Open Access page, which is where its abstract and BibTeX both live. */
+.related-bibtex {
+  font-size: 0.82rem;
+  color: var(--text-quiet);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.related-bibtex:hover {
+  color: var(--text-hover);
+  border-bottom-color: var(--border);
+}
+
+/* Metadata, not a heading: sized and coloured to sit behind the title. theme.css
+   re-points both of these at tokens so the badge follows the theme; the values here
+   are what it resolves to in light. */
+.related-venue {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--text-quiet);
+  background-color: var(--bg-chip);
+  border-radius: 999px;
+  padding: 0.15em 0.6em;
+  /* `nowrap` keeps a short venue like "CVPR 2025" from breaking mid-name, which is
+     what the sibling sites need. This one reads "CVPR 2026 Workshops" — long enough
+     that at 320px with 200% text the unbreakable chip was 329px in a 320px viewport,
+     and Bulma's `html { overflow-x: hidden }` made that 41px unreachable rather than
+     merely off-screen. Allowed to wrap once it cannot fit. */
+  white-space: nowrap;
+}
+
+@media screen and (max-width: 400px) {
+  .related-venue {
+    white-space: normal;
+  }
+}
+
+/* ---- BibTeX block ----
+   Was a long inline style attribute on both the container and its button. */
+
+.bibtex-container {
+  position: relative;
+  background-color: var(--bg-code);
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: var(--bg);
+  /* Was #e5e5e5, 1.26:1 against the button's own white fill — a control boundary
+     WCAG 1.4.11 asks to reach 3:1. The measurement that matters is against the
+     #f5f5f5 code block the button sits on, not its own fill: #8f8f8f gave 3.23:1
+     inward but only 2.97:1 outward, so #858585 is used instead — 3.45:1 and 3.17:1,
+     clearing 3:1 on both edges while still reading as quiet chrome. */
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-quiet);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Hover used to lighten the border to #b5b5b5 — 2.05:1, less visible than at rest,
+   so the feedback made the control harder to see. Darker instead. */
+.copy-code-btn:hover {
+  border-color: var(--border-hover);
+  color: var(--text-hover);
+}
+
+.copy-code-btn.copied {
+  color: var(--copied);
+  border-color: var(--copied);
+}
+
+/* ---- Equations ----
+   Long display equations have a stacked variant for narrow screens; only one of
+   the pair is ever rendered. These rules were lost when this file was rewritten,
+   which left both variants visible at once. */
+
+.math-mobile {
+  display: none;
+}
+
+.math-desktop {
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .math-mobile {
+    display: block;
+  }
+
+  .math-desktop {
+    display: none;
+  }
+
+  .video-compare-container {
+    width: calc(100% - 1.5rem);
+  }
+
+  /* Bulma stacks columns below 769px by dropping `display: flex` from .columns,
+     but `.column.is-half { width: 50% }` carries no media query of its own. Inside
+     the slideshow these columns sit in a grid cell rather than a plain block, so
+     they kept their 50% and four comparison sliders stayed crammed two-across on a
+     phone — each far too small to compare anything in. */
+  .slideshow .columns.is-multiline {
+    display: block;
+  }
+
+  .slideshow .column.is-half {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .slideshow .column.is-half + .column.is-half {
+    margin-top: 0.75rem;
+  }
+
+  /* Bulma pins .title.is-1 at a flat 3rem, which a long paper title cannot fit
+     on a phone. Scale with the viewport, with a floor so it stays a title. */
+  .publication-title.is-1 {
+    font-size: clamp(1.6rem, 7.2vw, 3rem);
+  }
+
+  .is-size-3 {
+    font-size: 1.4rem !important;
+  }
+
+  .is-size-5 {
+    font-size: 1rem !important;
+  }
+}
+
+/* ---- Display equations ----
+ *
+ * These formulas were authored to fit a phone, so none of them should ever show a
+ * scrollbar. `overflow: hidden` guarantees no scroll track is ever painted, and
+ * math-fit.js guarantees there is nothing to hide: it measures each equation once
+ * MathJax has typeset it and scales that one by exactly the ratio it needs.
+ *
+ * A fixed set of `scale()` breakpoints lived here through several revisions. CSS cannot
+ * ask how wide an equation turned out, so any such set is a guess — too weak for the
+ * widest formula on the narrowest screen, and needlessly small for every other one.
+ * Measuring is the only way to be certain everything fits, and being certain is what
+ * lets the overflow stay hidden with no scrollbar anywhere.
+ *
+ * (Originally there were no rules here at all: equations rendered at natural width and
+ * Bulma's `html { overflow-x: hidden }` quietly clipped any that were too wide.)
+ */
+mjx-container[display="true"] {
+  max-width: 100%;
+  /* `clip`, not `hidden`. Both suppress the scrollbar, but a `hidden` box is still a
+     scroll container — `scrollLeft` can be moved programmatically and some engines will
+     let a trackpad fling it — whereas `clip` is not scrollable at all. Since math-fit.js
+     guarantees the ink already fits, there is nothing to reach and nothing to scroll to. */
+  overflow: clip;
+}
+
+/* Inline maths is left alone. It sits in a line box, so giving it its own scroll or
+   transform would break the run of text around it, and these expressions are short
+   enough to wrap with the sentence. */
+mjx-container:not([display="true"]) {
+  max-width: 100%;
+}
+
+

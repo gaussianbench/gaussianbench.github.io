@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (function () {
+      var theme = 'light';
+      try { theme = localStorage.getItem('theme-preference') || 'light'; } catch (e) {}
+      document.documentElement.setAttribute('data-theme', theme);
+      document.documentElement.classList.add('js');
+    })();
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#ffffff">
+  <title>GaussianBench: Physics-Fidelity Evaluation for Gaussian Scene Representations</title>
+  <meta name="description" content="GaussianBench is a physics-fidelity benchmark for physics-integrated Gaussian scene representations: frozen scenes, simulator-independent scorers, and state-level verdicts that expose physical failures plausible rendered motion can hide.">
+  <meta name="author" content="Chukwudalu Dumebi-Kachikwu">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="GaussianBench: Physics-Fidelity Evaluation for Gaussian Scene Representations">
+  <meta property="og:description" content="Frozen tests and shared state-level scoring expose physical failures that plausible rendered motion can hide.">
+  <meta property="og:image" content="./static/images/bench_overview.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "GaussianBench: Physics-Fidelity Evaluation for Gaussian Scene Representations",
+    "author": {"@type": "Person", "name": "Chukwudalu Dumebi-Kachikwu", "affiliation": "Star Labs, University of Maryland"},
+    "datePublished": "2026"
+  }
+  </script>
+
+  <link rel="preload" href="./static/webfonts/noto-sans-latin.woff2?v=2026.09.26" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="./static/css/noto-sans.css?v=2026.09.26">
+  <link rel="stylesheet" href="./static/css/icons.css?v=2026.09.26">
+  <link rel="stylesheet" href="./static/css/site.css?v=2026.09.26">
+  <link rel="icon" href="./static/images/favicon.svg?v=2026.09.26" type="image/svg+xml">
+  <script defer src="./static/js/theme-switcher.js?v=2026.09.26"></script>
+  <script defer src="./static/js/site.js?v=2026.09.26"></script>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#top" aria-label="GaussianBench, back to top">
+        <img src="./static/images/favicon.svg?v=2026.09.26" alt="" width="26" height="26">
+        <span>GaussianBench</span>
+      </a>
+      <nav class="topnav" aria-label="Sections">
+        <a href="#overview">Overview</a>
+        <a href="#protocols">Protocols</a>
+        <a href="#results">Results</a>
+        <a href="#robustness">Robustness</a>
+        <a href="#reference">GaussianFlesh</a>
+        <a href="#citation">Cite</a>
+      </nav>
+      <div class="topbar-actions">
+        <a class="icon-btn" href="./static/files/gaussianbench-paper.pdf?v=2026.09.26" aria-label="Open paper PDF" title="Paper PDF"><i class="fas fa-file-pdf" aria-hidden="true"></i></a>
+        <a class="icon-btn" href="https://github.com/Dalu1234/GaussianBench" aria-label="GaussianBench code on GitHub" title="Code on GitHub"><i class="fab fa-github" aria-hidden="true"></i></a>
+        <button type="button" id="theme-toggle" class="icon-btn theme-toggle" aria-label="Switch to dark mode" aria-pressed="false" title="Toggle theme">
+          <span class="theme-glyphs" aria-hidden="true"><i class="fas fa-sun"></i><i class="fas fa-moon"></i></span>
+        </button>
+      </div>
+    </div>
+    <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  </header>
+
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="hero" id="top">
+      <div class="hero-glow" aria-hidden="true">
+        <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+      </div>
+      <div class="wrap hero-inner">
+        <p class="pill"><span class="dot"></span>Preprint · 2026</p>
+        <h1 class="hero-title">GaussianBench</h1>
+        <p class="hero-sub">Physics-Fidelity Evaluation for Gaussian Scene Representations</p>
+        <p class="hero-question">Can a system do more than make physics <em>look</em> right?</p>
+
+        <div class="authors">
+          <p class="author-name">Chukwudalu Dumebi-Kachikwu</p>
+          <p class="affil">Star Labs, University of Maryland</p>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="./static/files/gaussianbench-paper.pdf?v=2026.09.26">
+            <i class="fas fa-file-pdf" aria-hidden="true"></i><span>Paper</span>
+          </a>
+          <a class="btn btn-primary" href="https://github.com/Dalu1234/GaussianBench">
+            <i class="fab fa-github" aria-hidden="true"></i><span>Code</span>
+          </a>
+          <a class="btn btn-ghost" href="#results">Results</a>
+          <a class="btn btn-ghost" href="#citation">BibTeX</a>
+        </div>
+      </div>
+
+      <div class="wrap hero-figure reveal">
+        <figure class="figure-card zoomable">
+          <picture>
+            <source srcset="./static/images/bench_overview.webp?v=2026.09.26" type="image/webp">
+            <img src="./static/images/bench_overview.png?v=2026.09.26" width="890" height="408" alt="GaussianBench workflow: lock the test, run the system, and grade the exported physical state as PASS, FAIL, INVALID or NA">
+          </picture>
+          <figcaption><strong>GaussianBench in three steps.</strong> Lock each scene’s physics setup, reference answer, validity rules and tolerance; run every released system through a thin adapter that exports its native physical state; grade it with simulator-independent scorers.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ============ Key numbers ============ -->
+    <section class="stats-band" aria-label="Key numbers">
+      <div class="wrap stats">
+        <div class="stat reveal"><span class="stat-num" data-count="6">6</span><span class="stat-label">released external systems evaluated as broad profiles</span></div>
+        <div class="stat reveal"><span class="stat-num" data-count="47">47</span><span class="stat-label">applicable external scenes, each with a frozen reference</span></div>
+        <div class="stat reveal"><span class="stat-num"><span data-count="4">4</span><small>/6</small></span><span class="stat-label">reveal at least one non-precision physical failure</span></div>
+        <div class="stat reveal"><span class="stat-num" data-count="0">0</span><span class="stat-label">verdicts change when every tolerance is doubled</span></div>
+      </div>
+    </section>
+
+    <!-- ============ Overview ============ -->
+    <section class="section" id="overview">
+      <div class="wrap">
+        <div class="intro reveal">
+          <p class="kicker">The evaluation gap</p>
+          <h2>A convincing animation can still be physically wrong.</h2>
+          <p class="lead">3D Gaussian Splatting is moving from static reconstruction toward systems meant to predict how scenes change under interaction. Those systems are usually judged by rendered motion or a method-specific task, yet a rollout can look plausible while conserving momentum incorrectly, transmitting force wrongly across a material boundary, or never reaching the deformation it was asked for. GaussianBench tests those claims directly, from exported physical state.</p>
+        </div>
+
+        <ol class="steps">
+          <li class="step reveal">
+            <span class="step-num">1</span>
+            <h3>Lock the test</h3>
+            <p>Each versioned scene fixes its setup, analytical or measured reference, regime of validity and tolerance before any entrant runs.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num">2</span>
+            <h3>Run native physics</h3>
+            <p>A validated thin adapter hands the same scene to the released system, pinned to a commit, and exports the state it actually produced.</p>
+          </li>
+          <li class="step reveal">
+            <span class="step-num">3</span>
+            <h3>Grade and diagnose</h3>
+            <p>Pure-function scorers, unit-tested on synthetic trajectories, return a verdict and point to the physical contract that failed.</p>
+          </li>
+        </ol>
+
+        <div class="verdicts reveal" aria-label="Verdict definitions">
+          <div class="verdict"><span class="badge pass">PASS</span><p>The applicable test ran and met its reference within tolerance.</p></div>
+          <div class="verdict"><span class="badge fail">FAIL</span><p>The test ran and missed its reference: a genuine physical failure.</p></div>
+          <div class="verdict"><span class="badge invalid">INVALID</span><p>The prescribed regime was never realized, so the comparison is not valid.</p></div>
+          <div class="verdict"><span class="badge na">NA</span><p>The release does not expose the required state or capability.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Protocols ============ -->
+    <section class="section tint" id="protocols">
+      <div class="wrap">
+        <div class="intro reveal">
+          <p class="kicker">Four protocol families</p>
+          <h2>Test the motion, the relationships, and the representation.</h2>
+          <p class="lead">Each protocol asks a different question of the same exported state, so a failure can be attributed to wrong motion, wrong constitutive response, wrong Gaussian-state transport, or an invalid regime.</p>
+        </div>
+
+        <div class="protocols">
+          <article class="protocol reveal" data-tone="a">
+            <div class="protocol-head"><span class="protocol-letter">A</span><span class="protocol-tier">Dynamics</span></div>
+            <h3>Does the object obey basic physics over time?</h3>
+            <p>Momentum conservation, beam frequency, stress-wave speed, Poisson contraction, melt-front motion and free fall, each against a known solution.</p>
+            <ul class="chips" aria-label="Scenes"><li>A1 conservation</li><li>A2 Euler–Bernoulli</li><li>A3 c = √(E/ρ)</li><li>A4 Neumann–Stefan</li><li>A5 Poisson</li><li>A6 free fall</li></ul>
+          </article>
+          <article class="protocol reveal" data-tone="b">
+            <div class="protocol-head"><span class="protocol-letter">B</span><span class="protocol-tier">Relationships</span></div>
+            <h3>Does it preserve relationships and respond to change?</h3>
+            <p>A bimaterial bar checks regional strains and interface traction. Interventions change one input (gravity, temperature, or material assignment) and compare against the predicted counterfactual.</p>
+            <ul class="chips" aria-label="Scenes"><li>B1 series bar</li><li>Thermal intervention</li><li>Material repainting</li></ul>
+          </article>
+          <article class="protocol reveal" data-tone="c">
+            <div class="protocol-head"><span class="protocol-letter">C</span><span class="protocol-tier">Gaussian state</span></div>
+            <h3>Does the representation itself stay physically correct?</h3>
+            <p>A position-fitted deformation checks whether the requested motion happened; Σ′ = FΣ<sub>0</sub>F<sup>⊤</sup> checks whether covariance followed it. Health, rendering and native-triangle checks complete the tier.</p>
+            <ul class="chips" aria-label="Scenes"><li>C1 affine</li><li>C2 shear &amp; health</li><li>C3 render</li><li>C4 captured beam</li><li>C5–C8 triangle state</li></ul>
+          </article>
+          <article class="protocol reveal" data-tone="m">
+            <div class="protocol-head"><span class="protocol-letter">M</span><span class="protocol-tier">Measured material</span></div>
+            <h3>Does the constitutive law match real material?</h3>
+            <p>Simulated stress–strain is compared with an independent three-term Yeoh fit to ASTM D412 natural-rubber measurements, up to 150% engineering strain.</p>
+            <ul class="chips" aria-label="Scenes"><li>M1 ASTM D412</li></ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Results ============ -->
+    <section class="section" id="results">
+      <div class="wrap">
+        <div class="intro reveal">
+          <p class="kicker">Cross-system evidence</p>
+          <h2>The same protocol reveals different failure structures.</h2>
+          <p class="lead">All six external systems succeed in their own published demonstrations. Under shared state-level tests, four show at least one non-precision physical failure. Read each row as a diagnostic profile, not a leaderboard score.</p>
+        </div>
+
+        <div class="panel reveal">
+          <div class="panel-head">
+            <h3>Verdicts per released system</h3>
+            <div class="legend" aria-hidden="true">
+              <span><i class="sw pass"></i>Pass</span><span><i class="sw fail"></i>Fail</span><span><i class="sw invalid"></i>Invalid</span>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table class="summary">
+              <thead>
+                <tr><th scope="col">System</th><th scope="col">Published native evidence</th><th scope="col" class="num">Scenes</th><th scope="col" class="bar-col">Verdicts</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">PhysGaussian</th><td class="muted">Synthetic / captured rendered dynamics</td><td class="num">10</td><td><div class="sbar" data-p="7" data-f="2" data-i="1" data-n="10"></div></td></tr>
+                <tr><th scope="row">PhysDreamer</th><td class="muted">Action-conditioned motion-realism study</td><td class="num">8</td><td><div class="sbar" data-p="5" data-f="2" data-i="1" data-n="8"></div></td></tr>
+                <tr><th scope="row">OmniPhysGS</th><td class="muted">Material-conditioned interaction suite</td><td class="num">8</td><td><div class="sbar" data-p="5" data-f="2" data-i="1" data-n="8"></div></td></tr>
+                <tr><th scope="row">GaussianFluent</th><td class="muted">Mixed-material fracture and cutting</td><td class="num">7</td><td><div class="sbar" data-p="2" data-f="4" data-i="1" data-n="7"></div></td></tr>
+                <tr><th scope="row">Physics3D</th><td class="muted">Video-guided material optimization</td><td class="num">9</td><td><div class="sbar" data-p="7" data-f="1" data-i="1" data-n="9"></div></td></tr>
+                <tr><th scope="row">GASP <span class="tag">native-triangle</span></th><td class="muted">Engine-agnostic Gaussian simulation</td><td class="num">5</td><td><div class="sbar" data-p="5" data-f="0" data-i="0" data-n="5"></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="note">Systems expose different native state and therefore enter different applicable scenes. GASP’s narrower representation-native profile omits conservation, bimaterial and measured-material families, so its 5/5 does not imply superiority over broader profiles. Physics3D’s only failure is the strict float32 A1a momentum tier, which no MPM entrant passes.</p>
+        </div>
+
+        <div class="panel reveal" id="matrix">
+          <div class="panel-head">
+            <h3>Every scene, every system</h3>
+            <div class="tabs" role="tablist" aria-label="Scene family">
+              <button type="button" role="tab" id="tab-mech" aria-selected="true" aria-controls="matrix-body" data-set="mech">Mechanics</button>
+              <button type="button" role="tab" id="tab-rep" aria-selected="false" aria-controls="matrix-body" data-set="rep" tabindex="-1">Representation state</button>
+            </div>
+          </div>
+          <p class="scroll-hint" aria-hidden="true">Swipe sideways to see every scene →</p>
+          <div class="table-scroll" id="matrix-body" role="tabpanel" aria-labelledby="tab-mech">
+            <noscript><p class="note">The per-scene matrix needs JavaScript. Tables 8 and 9 of the paper list the same results.</p></noscript>
+          </div>
+          <p class="note" id="matrix-note"></p>
+          <div class="cell-detail" id="cell-detail" aria-live="polite">
+            <span class="cell-detail-hint">Hover or tap a cell for the scene, the metric and its value.</span>
+          </div>
+        </div>
+
+        <div class="findings">
+          <article class="finding reveal">
+            <span class="finding-num">01</span>
+            <p class="finding-big">105%</p>
+            <h3>Uniform success does not guarantee interface fidelity.</h3>
+            <p>OmniPhysGS and PhysDreamer pass homogeneous beam, wave and Poisson probes, yet on the B1 bimaterial bar their largest regional-strain error reaches 105.0% and 105.6%, with a 55% traction mismatch across the interface.</p>
+          </article>
+          <article class="finding reveal">
+            <span class="finding-num">02</span>
+            <p class="finding-big">45.3% <span>vs</span> 0.075%</p>
+            <h3>Motion and Gaussian transport are separable.</h3>
+            <p>Under unit shear, PhysGaussian and Physics3D miss the requested deformation by 45.3%, so the scene is INVALID, while covariance is still transported correctly for the deformation they did produce.</p>
+          </article>
+          <article class="finding reveal">
+            <span class="finding-num">03</span>
+            <p class="finding-big">0 <span>of</span> 47</p>
+            <h3>The failures are not threshold accidents.</h3>
+            <p>Doubling every verdict-bearing error budget changes zero external verdicts. Validity gates stay frozen, so relaxing a tolerance cannot turn an unrealized experiment into a pass.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Robustness ============ -->
+    <section class="section tint" id="robustness">
+      <div class="wrap">
+        <div class="intro reveal">
+          <p class="kicker">Robustness to controlled changes</p>
+          <h2>Verdicts that hold when the rules move.</h2>
+          <p class="lead">Every external export is re-scored with each error budget scaled from half to double, without rerunning any simulator. Slide to see which verdicts move.</p>
+        </div>
+
+        <div class="panel reveal">
+          <div class="panel-head">
+            <h3>Tolerance sensitivity</h3>
+            <div class="legend" aria-hidden="true">
+              <span><i class="sw pass"></i>Pass</span><span><i class="sw fail"></i>Fail</span><span><i class="sw invalid"></i>Invalid</span>
+            </div>
+          </div>
+          <div class="slider-row">
+            <label for="tol" class="slider-label">Tolerance multiplier <output id="tol-out" for="tol">1×</output></label>
+            <input type="range" id="tol" min="0" max="4" step="1" value="2" list="tol-ticks" aria-valuetext="1× nominal">
+            <datalist id="tol-ticks"><option value="0" label="0.5×"></option><option value="1" label="0.75×"></option><option value="2" label="1×"></option><option value="3" label="1.25×"></option><option value="4" label="2×"></option></datalist>
+            <div class="ticks" aria-hidden="true"><span>0.5×</span><span>0.75×</span><span>Nominal</span><span>1.25×</span><span>2×</span></div>
+          </div>
+          <div class="tol-chart" id="tol-chart"></div>
+          <p class="note" id="tol-note" aria-live="polite"></p>
+        </div>
+
+        <div class="two-col">
+          <div class="panel reveal">
+            <div class="panel-head"><h3>Adversarial scorer audit</h3></div>
+            <p class="panel-copy">Change one state component at a time and check that exactly the intended sub-verdict flips.</p>
+            <div class="table-scroll">
+              <table class="data">
+                <thead><tr><th scope="col">Scorer input</th><th scope="col">Transport</th><th scope="col">Health</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Exact FΣ<sub>0</sub>F<sup>⊤</sup></th><td><span class="badge pass sm">Pass</span></td><td><span class="badge pass sm">Pass</span></td></tr>
+                  <tr><th scope="row">Frozen Σ<sub>0</sub> under shear</th><td><span class="badge fail sm">Fail</span></td><td><span class="badge pass sm">Pass</span></td></tr>
+                  <tr><th scope="row">Induced eigenvalue collapse</th><td><span class="badge pass sm">Pass</span></td><td><span class="badge fail sm">Fail</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="note">Freezing covariance at frame zero on C1 raises every external adapter’s transport error from ≤0.014% to ≈51%, while its fitted kinematics stay unchanged.</p>
+          </div>
+
+          <div class="panel reveal">
+            <div class="panel-head"><h3>Counterfactual interventions</h3></div>
+            <p class="panel-copy">Geometry and initial state stay fixed; only the thermal boundary or material painting changes. Shown on GaussianFlesh.</p>
+            <div class="table-scroll">
+              <table class="data">
+                <thead><tr><th scope="col">Readout</th><th scope="col" class="num">Predicted</th><th scope="col" class="num">Measured</th><th scope="col" class="num">Error</th></tr></thead>
+                <tbody>
+                  <tr><th scope="row">Melt prefactor, 370 K / 400 K</th><td class="num">0.752</td><td class="num">0.754</td><td class="num">0.24%</td></tr>
+                  <tr><th scope="row">Uniform soft, left share</th><td class="num">0.500</td><td class="num">0.498</td><td class="num">0.20 pp</td></tr>
+                  <tr><th scope="row">Soft → stiff, left share</th><td class="num">0.800</td><td class="num">0.798</td><td class="num">0.23 pp</td></tr>
+                  <tr><th scope="row">Stiff → soft, left share</th><td class="num">0.200</td><td class="num">0.200</td><td class="num">&lt; 0.01 pp</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="note">A passing intervention means the system responds to the changed input rather than replaying a memorized motion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Reference entrant ============ -->
+    <section class="section" id="reference">
+      <div class="wrap">
+        <div class="split">
+          <div class="split-copy reveal">
+            <p class="kicker">Full-contract reference entrant</p>
+            <h2>GaussianFlesh exercises the complete benchmark.</h2>
+            <p>Every Gaussian is both a rendering primitive and a continuum material point with persistent identity. A shared-grid UL-MLS-MPM solver dispatches each particle’s own stress law, so one connected object can hold stiff, soft and plastic regions that exchange momentum through the same grid.</p>
+            <ul class="checks">
+              <li>Covariance push-forward <span class="math">Σ<sub>p</sub> = F<sub>p</sub>Σ<sub>0,p</sub>F<sub>p</sub><sup>⊤</sup></span></li>
+              <li>Corotated, J2-plastic metal, Drucker–Prager clay and molten branches</li>
+              <li>Grid heat diffusion, µ(T) softening and latent-heat melting</li>            </ul>
+            <p class="muted small">It passes 11 of 12 applicable scenes; its only miss is the strict single-precision A1a momentum tier. GaussianBench and its cross-system diagnoses are the contribution; GaussianFlesh shows one implementation of the contract.</p>
+          </div>
+          <figure class="figure-card zoomable reveal">
+            <picture>
+              <source srcset="./static/images/hero_scene_matrix.webp?v=2026.09.26" type="image/webp">
+              <img src="./static/images/hero_scene_matrix.png?v=2026.09.26" width="1414" height="1341" loading="lazy" alt="Rendered GaussianFlesh demonstrations across elastic, stiff, soft, multi-material collision and thermomechanical regimes">
+            </picture>
+            <figcaption>Elastic, stiff, soft, multi-material collision and thermomechanical regimes on one shared Gaussian substrate.</figcaption>
+          </figure>
+        </div>
+
+        <div class="gallery">
+          <figure class="figure-card dark-media zoomable reveal">
+            <img src="./static/images/material_responses.webp?v=2026.09.26" width="1232" height="488" loading="lazy" alt="Rubber, metal and jelly spheres after impact: rubber bulges, metal holds its shape, jelly flattens">
+            <figcaption>Material fields change per particle while the representation stays the same.</figcaption>
+          </figure>
+          <figure class="figure-card dark-media zoomable reveal">
+            <img src="./static/images/substrate_dynamics.webp?v=2026.09.26" width="1366" height="578" loading="lazy" alt="A non-spherical Gaussian substrate deforming on contact with the floor">
+            <figcaption>Covariance ellipsoids expose local strain on a non-spherical substrate.</figcaption>
+          </figure>
+          <figure class="figure-card zoomable reveal wide">
+            <img src="./static/images/impact_frames.webp?v=2026.09.26" width="1920" height="697" loading="lazy" alt="Ten frames of a rubber duck falling, compressing on impact, and recovering its shape">
+            <figcaption>Impact and recovery: an elastic object compresses on contact and rebounds to its rest shape.</figcaption>
+          </figure>
+          <figure class="figure-card zoomable reveal">
+            <picture>
+              <source srcset="./static/images/thermal_diagnostics.webp?v=2026.09.26" type="image/webp">
+              <img src="./static/images/thermal_diagnostics.png?v=2026.09.26" width="2183" height="1386" loading="lazy" alt="Thermal diagnostics plotting heat, latent state, melt fraction and front position over time">
+            </picture>
+            <figcaption>Thermal diagnostics log heat, latent buffer, melt fraction and front position, not just the final look.</figcaption>
+          </figure>
+          <figure class="figure-card zoomable reveal">
+            <picture>
+              <source srcset="./static/images/roundtrip.webp?v=2026.09.26" type="image/webp">
+              <img src="./static/images/roundtrip.png?v=2026.09.26" width="2117" height="1516" loading="lazy" alt="A trained plush Gaussian asset at rest, at impact and after rebound">
+            </picture>
+            <figcaption>A captured plush compressed 25% rebounds to within 0.8% of its bounding-box diagonal (29 dB PSNR, 0.98 SSIM).</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Takeaway ============ -->
+    <section class="takeaway">
+      <div class="wrap reveal">
+        <p class="kicker">The takeaway</p>
+        <h2>Visual plausibility is not physical correctness.</h2>
+        <p>As Gaussian splatting moves toward interactive scenes and world models, believable pixels are not enough. GaussianBench makes behavior under new forces, contacts, materials and temperatures measurable, attributable and reproducible, and tells us which part failed.</p>
+      </div>
+    </section>
+
+    <!-- ============ Citation ============ -->
+    <section class="section" id="citation">
+      <div class="wrap narrow">
+        <div class="intro reveal">
+          <p class="kicker">Citation</p>
+          <h2>BibTeX</h2>
+        </div>
+        <div class="bibtex reveal">
+          <button type="button" class="copy-btn" id="copy-btn" aria-label="Copy BibTeX"><i class="fas fa-copy" aria-hidden="true"></i><span>Copy</span></button>
+<pre><code id="bibtex-content">@article{dumebikachikwu2026gaussianbench,
+  title   = {GaussianBench: Physics-Fidelity Evaluation for Gaussian Scene Representations},
+  author  = {Dumebi-Kachikwu, Chukwudalu},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</code></pre>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-row">
+      <p><strong>GaussianBench</strong> · Star Labs, University of Maryland · 2026</p>
+      <p class="muted small"><a href="https://github.com/Dalu1234/GaussianBench"><i class="fab fa-github" aria-hidden="true"></i> Code on GitHub</a> · Site built on the Nerfies academic project-page template.</p>
+    </div>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-label="Enlarged figure">
+    <button type="button" class="lightbox-close" aria-label="Close">×</button>
+    <img alt="">
+    <p class="lightbox-caption"></p>
+  </dialog>
+</body>
+</html>
