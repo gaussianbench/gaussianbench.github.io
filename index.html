@@ -110,10 +110,10 @@
         </ol>
 
         <dl class="verdicts" aria-label="Verdict definitions">
-          <div><dt><span class="dot pass"></span>Pass</dt><dd>The applicable test ran and met its reference within tolerance.</dd></div>
-          <div><dt><span class="dot fail"></span>Fail</dt><dd>The test ran and missed its reference: a genuine physical failure.</dd></div>
-          <div><dt><span class="dot invalid"></span>Invalid</dt><dd>The prescribed regime was never realized, so the comparison is not valid.</dd></div>
-          <div><dt><span class="dot na"></span>NA</dt><dd>The release does not expose the required state or capability.</dd></div>
+          <div><dt><span class="dot pass"></span>Pass</dt><dd>The system got the right answer, within the allowed error.</dd></div>
+          <div><dt><span class="dot fail"></span>Fail</dt><dd>The system ran the test and got the wrong answer: a real physics mistake.</dd></div>
+          <div><dt><span class="dot invalid"></span>Invalid</dt><dd>The system never reached the situation the test asks for, so the result can’t be judged.</dd></div>
+          <div><dt><span class="dot na"></span>NA</dt><dd>The system can’t do what this test needs, so the test is skipped.</dd></div>
         </dl>
       </div>
     </section>
