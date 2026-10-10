@@ -913,6 +913,12 @@ input[type="range"]::-moz-range-thumb {
   grid-column: 1 / -1;
 }
 
+.gallery .solo {
+  grid-column: 1 / -1;
+  width: calc(50% - 1rem);
+  justify-self: center;
+}
+
 /* ---------------------------------------------------------------- takeaway */
 
 .statement {
@@ -1109,8 +1115,10 @@ input[type="range"]::-moz-range-thumb {
     gap: 1.25rem;
   }
 
-  .gallery .wide {
+  .gallery .wide,
+  .gallery .solo {
     grid-column: auto;
+    width: auto;
   }
 
   .hide-sm {
