@@ -231,41 +231,6 @@
           <div class="tol-chart" id="tol-chart"></div>
           <p class="note" id="tol-note" aria-live="polite"></p>
         </div>
-
-        <div class="two-col">
-          <div>
-            <h3>Adversarial scorer audit</h3>
-            <p class="sub">Change one state component at a time; exactly the intended sub-verdict should flip.</p>
-            <div class="table-scroll">
-              <table class="data">
-                <thead><tr><th scope="col">Scorer input</th><th scope="col">Transport</th><th scope="col">Health</th></tr></thead>
-                <tbody>
-                  <tr><th scope="row">Exact FΣ<sub>0</sub>F<sup>⊤</sup></th><td><span class="v pass">Pass</span></td><td><span class="v pass">Pass</span></td></tr>
-                  <tr><th scope="row">Frozen Σ<sub>0</sub> under shear</th><td><span class="v fail">Fail</span></td><td><span class="v pass">Pass</span></td></tr>
-                  <tr><th scope="row">Induced eigenvalue collapse</th><td><span class="v pass">Pass</span></td><td><span class="v fail">Fail</span></td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="note">Freezing covariance at frame zero on C1 raises every external adapter’s transport error from ≤0.014% to ≈51%, while its fitted kinematics stay unchanged.</p>
-          </div>
-
-          <div>
-            <h3>Counterfactual interventions</h3>
-            <p class="sub">Geometry and initial state stay fixed; only the thermal boundary or material painting changes. Shown on GaussianFlesh.</p>
-            <div class="table-scroll">
-              <table class="data">
-                <thead><tr><th scope="col">Readout</th><th scope="col" class="num">Predicted</th><th scope="col" class="num">Measured</th><th scope="col" class="num hide-sm">Error</th></tr></thead>
-                <tbody>
-                  <tr><th scope="row">Melt prefactor, 370 K / 400 K</th><td class="num">0.752</td><td class="num">0.754</td><td class="num hide-sm">0.24%</td></tr>
-                  <tr><th scope="row">Uniform soft, left share</th><td class="num">0.500</td><td class="num">0.498</td><td class="num hide-sm">0.20 pp</td></tr>
-                  <tr><th scope="row">Soft → stiff, left share</th><td class="num">0.800</td><td class="num">0.798</td><td class="num hide-sm">0.23 pp</td></tr>
-                  <tr><th scope="row">Stiff → soft, left share</th><td class="num">0.200</td><td class="num">0.200</td><td class="num hide-sm">&lt; 0.01 pp</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <p class="note">A passing intervention means the system responds to the changed input rather than replaying a memorized motion.</p>
-          </div>
-        </div>
       </div>
     </section>
 
