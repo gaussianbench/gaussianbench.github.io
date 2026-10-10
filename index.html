@@ -201,14 +201,14 @@
 
         <div class="findings">
           <article>
-            <p class="figure-num">105%</p>
-            <h3>Uniform success does not guarantee interface fidelity.</h3>
-            <p>OmniPhysGS and PhysDreamer pass homogeneous beam, wave and Poisson probes, yet on the B1 bimaterial bar their largest regional-strain error reaches 105.0% and 105.6%, with a 55% traction mismatch across the interface.</p>
+            <p class="figure-num">105% <span>error</span></p>
+            <h3>Getting one material right doesn’t mean getting two right.</h3>
+            <p>OmniPhysGS and PhysDreamer pass the single-material tests (beam, wave and Poisson). But join two different materials into one bar (B1) and their stretch is off by up to 105.0% and 105.6%, and the forces on either side of the joint disagree by 55%.</p>
           </article>
           <article>
             <p class="figure-num">45.3% <span>vs</span> 0.075%</p>
-            <h3>Motion and Gaussian transport are separable.</h3>
-            <p>Under unit shear, PhysGaussian and Physics3D miss the requested deformation by 45.3%, so the scene is INVALID, while covariance is still transported correctly for the deformation they did produce.</p>
+            <h3>An object can move wrong even when its Gaussians follow correctly.</h3>
+            <p>Asked to shear an object, PhysGaussian and Physics3D get only partway there, missing the requested shape by 45.3%, so the test is INVALID. Yet each Gaussian’s shape follows the motion that did happen almost exactly, to within 0.075%. The benchmark tells these two problems apart.</p>
           </article>
         </div>
       </div>
