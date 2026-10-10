@@ -130,25 +130,25 @@
           <article class="protocol">
             <p class="protocol-id"><span class="letter">A</span>Dynamics</p>
             <h3>Does the object obey basic physics over time?</h3>
-            <p>Momentum conservation, beam frequency, stress-wave speed, Poisson contraction, melt-front motion and free fall, each against a known solution.</p>
+            <p>Does a dropped, struck or vibrating object move the way textbook physics says it should? We check momentum conservation, beam frequency, stress-wave speed, Poisson contraction, melt-front motion and free fall, each against a known solution.</p>
             <p class="scene-ids">A1 conservation · A2 Euler–Bernoulli · A3 wave speed · A4 Neumann–Stefan · A5 Poisson · A6 free fall</p>
           </article>
           <article class="protocol">
             <p class="protocol-id"><span class="letter">B</span>Relationships</p>
             <h3>Does it preserve relationships and respond to change?</h3>
-            <p>A bimaterial bar checks regional strains and interface traction. Interventions change one input (gravity, temperature, or material assignment) and compare against the predicted counterfactual.</p>
+            <p>Real objects are often made of more than one material, and a good simulator should react sensibly when conditions change. A bimaterial bar checks regional strains and the force passed across the boundary (interface traction). Interventions change one input (gravity, temperature, or material assignment) and compare against the predicted counterfactual, so a system can’t pass by replaying a memorized motion.</p>
             <p class="scene-ids">B1 series bar · thermal intervention · material repainting</p>
           </article>
           <article class="protocol">
             <p class="protocol-id"><span class="letter">C</span>Gaussian state</p>
             <h3>Does the representation itself stay physically correct?</h3>
-            <p>A position-fitted deformation checks whether the requested motion happened; Σ′ = FΣ<sub>0</sub>F<sup>⊤</sup> checks whether covariance followed it. Health, rendering and native-triangle checks complete the tier.</p>
+            <p>Each Gaussian is a small blob whose shape (its covariance) should stretch and turn with the material around it. A position-fitted deformation checks whether the requested motion happened; Σ′ = FΣ<sub>0</sub>F<sup>⊤</sup> checks whether each blob’s shape followed it. Health, rendering and native-triangle checks complete the tier.</p>
             <p class="scene-ids">C1 affine · C2 shear and health · C3 render · C4 captured beam · C5–C8 triangle state</p>
           </article>
           <article class="protocol">
             <p class="protocol-id"><span class="letter">M</span>Measured material</p>
             <h3>Does the constitutive law match real material?</h3>
-            <p>Simulated stress–strain is compared with an independent three-term Yeoh fit to ASTM D412 natural-rubber measurements, up to 150% engineering strain.</p>
+            <p>Matching a textbook formula isn’t the same as matching a real material, so we compare against lab measurements of stretched rubber. Simulated stress–strain is compared with an independent three-term Yeoh fit to ASTM D412 natural-rubber measurements, up to 150% engineering strain.</p>
             <p class="scene-ids">M1 ASTM D412</p>
           </article>
         </div>
