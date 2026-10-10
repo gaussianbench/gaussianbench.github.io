@@ -39,7 +39,7 @@
        the common case. Setting it here instead keeps it tied to the actual theme. */
     function chrome(theme) {
         var m = document.querySelector('meta[name="theme-color"]');
-        if (m) m.setAttribute("content", theme === "dark" ? "#0b0f13" : "#ffffff");
+        if (m) m.setAttribute("content", theme === "dark" ? "#0f1012" : "#ffffff");
     }
 
     function apply(theme) {
