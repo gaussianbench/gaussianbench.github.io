@@ -97,15 +97,15 @@
         <ol class="steps">
           <li>
             <h3><span class="step-num">1</span>Lock the test</h3>
-            <p>Each versioned scene fixes its setup, analytical or measured reference, regime of validity and tolerance before any entrant runs.</p>
+            <p>Before any system is tested, each scene is fixed in advance: the setup, the correct answer, the conditions where the test applies, and how much error is allowed.</p>
           </li>
           <li>
-            <h3><span class="step-num">2</span>Run native physics</h3>
-            <p>A validated thin adapter hands the same scene to the released system, pinned to a commit, and exports the state it actually produced.</p>
+            <h3><span class="step-num">2</span>Run the system</h3>
+            <p>Each published system runs the same scene with its own, unmodified physics code, and we record what it actually does.</p>
           </li>
           <li>
-            <h3><span class="step-num">3</span>Grade and diagnose</h3>
-            <p>Pure-function scorers, unit-tested on synthetic trajectories, return a verdict and point to the physical contract that failed.</p>
+            <h3><span class="step-num">3</span>Grade the result</h3>
+            <p>Automated checks compare the result with the correct answer, give a verdict, and point to exactly which part of the physics went wrong.</p>
           </li>
         </ol>
 
