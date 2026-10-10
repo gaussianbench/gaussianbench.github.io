@@ -16,7 +16,7 @@ Then open `http://127.0.0.1:8000/`.
 
 Create a GitHub repository, push this folder, and enable Pages from the repository's default branch. The `.nojekyll` file keeps the static asset paths unchanged.
 
-Before publishing, update the provisional BibTeX entry and add the final arXiv link to `index.html`.
+The paper is on arXiv as [2610.10554](https://arxiv.org/abs/2610.10554).
 
 ## Layout
 
