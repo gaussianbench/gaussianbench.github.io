@@ -922,6 +922,13 @@ input[type="range"]::-moz-range-thumb {
 
 /* ---------------------------------------------------------------- takeaway */
 
+.tldr {
+  margin-bottom: 0.75rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
 .statement {
   max-width: 21ch;
   margin-bottom: 1.5rem;
