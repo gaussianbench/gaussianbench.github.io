@@ -241,10 +241,11 @@
           <div>
             <h2>GaussianFlesh runs every test.</h2>
             <p class="lead">Our reference system treats each Gaussian as both something you see and a piece of physical material. One shared solver (UL-MLS-MPM) lets a single object mix stiff, soft and plastic parts that push on each other naturally.</p>
+            <p class="list-intro">That design lets it handle:</p>
             <ul class="list">
-              <li>Gaussian shapes follow the deformation: <math><msub><mi mathvariant="normal">Σ</mi><mi>p</mi></msub><mo>=</mo><msub><mi>F</mi><mi>p</mi></msub><msub><mi mathvariant="normal">Σ</mi><mrow><mn>0</mn><mo>,</mo><mi>p</mi></mrow></msub><msubsup><mi>F</mi><mi>p</mi><mo>⊤</mo></msubsup></math></li>
-              <li>Rubber, metal, clay and melting materials</li>
-              <li>Heat flow, temperature softening and melting</li>
+              <li><strong>Shape that tracks motion.</strong> Each Gaussian stretches and turns with the material around it (<math><msub><mi mathvariant="normal">Σ</mi><mi>p</mi></msub><mo>=</mo><msub><mi>F</mi><mi>p</mi></msub><msub><mi mathvariant="normal">Σ</mi><mrow><mn>0</mn><mo>,</mo><mi>p</mi></mrow></msub><msubsup><mi>F</mi><mi>p</mi><mo>⊤</mo></msubsup></math>).</li>
+              <li><strong>Many materials.</strong> Rubber, metal, clay, and material that melts.</li>
+              <li><strong>Heat.</strong> Temperature spreads through an object, softens it, and can melt it.</li>
             </ul>
             <p class="note">It passes 11 of its 12 tests, missing only the strictest momentum check (A1a). It shows one way to meet the benchmark; the benchmark itself is the contribution.</p>
           </div>
