@@ -55,7 +55,7 @@
   var WORD = { pass: "PASS", fail: "FAIL", invalid: "INVALID" };
 
   // Table 7: pass/fail/invalid at each tolerance multiplier.
-  var MULTIPLIERS = ["0.5×", "0.75×", "1× nominal", "1.25×", "2×"];
+  var MULTIPLIERS = ["0.5×", "0.75×", "1× (original)", "1.25×", "2×"];
   var NOMINAL = 2;
   var TOLERANCE = {
     PhysGaussian: [[6, 3, 1], [7, 2, 1], [7, 2, 1], [7, 2, 1], [7, 2, 1]],
@@ -66,11 +66,11 @@
     GASP: [[4, 1, 0], [5, 0, 0], [5, 0, 0], [5, 0, 0], [5, 0, 0]]
   };
   var TOL_NOTES = [
-    "At half the allowed error, ten nominal passes become failures: PhysGaussian A3, OmniPhysGS A2/A3/A5, PhysDreamer A2/A3/A5, Physics3D A3/A6 and GASP C7. No failure becomes a pass.",
-    "At 0.75×, five borderline passes become failures: OmniPhysGS A2/A5, PhysDreamer A2/A5 and Physics3D A6.",
-    "Nominal frozen tolerances. Validity gates (minimum travel, prescribed-face realization, small-deflection bounds) never move with the multiplier.",
-    "At 1.25×, no verdict changes.",
-    "Doubling every error budget changes none of the 47 external verdicts: no failure or invalid outcome is an artifact of the nominal cutoff."
+    "With half the allowed error, ten results that passed now fail: PhysGaussian A3, OmniPhysGS A2/A3/A5, PhysDreamer A2/A3/A5, Physics3D A3/A6 and GASP C7. No failure turns into a pass.",
+    "With a quarter less error allowed, five close passes now fail: OmniPhysGS A2/A5, PhysDreamer A2/A5 and Physics3D A6.",
+    "These are the original error limits used in the paper. Loosening them never lets a test pass if the system didn’t actually set up the situation being tested, for example if it never moved far enough or never bent the way it was told to.",
+    "With a quarter more error allowed, nothing changes.",
+    "Even with double the allowed error, none of the 47 results change. The failures are real, not a side effect of a strict cutoff."
   ];
 
   function el(tag, cls, text) {
