@@ -239,14 +239,14 @@
       <div class="wrap">
         <div class="split">
           <div>
-            <h2>GaussianFlesh exercises the complete benchmark.</h2>
-            <p class="lead">Every Gaussian is both a rendering primitive and a continuum material point with persistent identity. A shared-grid UL-MLS-MPM solver dispatches each particle’s own stress law, so one connected object can hold stiff, soft and plastic regions that exchange momentum through the same grid.</p>
+            <h2>GaussianFlesh runs every test.</h2>
+            <p class="lead">Our reference system treats each Gaussian as both something you see and a piece of physical material. One shared solver (UL-MLS-MPM) lets a single object mix stiff, soft and plastic parts that push on each other naturally.</p>
             <ul class="list">
-              <li>Covariance push-forward Σ<sub>p</sub> = F<sub>p</sub>Σ<sub>0,p</sub>F<sub>p</sub><sup>⊤</sup></li>
-              <li>Corotated, J2-plastic metal, Drucker–Prager clay and molten branches</li>
-              <li>Grid heat diffusion, µ(T) softening and latent-heat melting</li>
+              <li>Gaussian shapes follow the deformation: Σ<sub>p</sub> = F<sub>p</sub>Σ<sub>0,p</sub>F<sub>p</sub><sup>⊤</sup></li>
+              <li>Rubber, metal, clay and melting materials</li>
+              <li>Heat flow, temperature softening and melting</li>
             </ul>
-            <p class="note">GaussianFlesh passes 11 of its 12 applicable scenes; its only miss is the strict single-precision A1a momentum tier. GaussianBench and its cross-system diagnoses are the contribution; GaussianFlesh shows one implementation of the contract.</p>
+            <p class="note">It passes 11 of its 12 tests, missing only the strictest momentum check (A1a). It shows one way to meet the benchmark; the benchmark itself is the contribution.</p>
           </div>
           <figure class="figure">
             <picture>
