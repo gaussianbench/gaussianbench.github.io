@@ -142,7 +142,7 @@
           <article class="protocol">
             <p class="protocol-id"><span class="letter">C</span>Gaussian state</p>
             <h3>Does the representation itself stay physically correct?</h3>
-            <p>Each Gaussian is a small blob whose shape (its covariance) should stretch and turn with the material around it. A position-fitted deformation checks whether the requested motion happened; Σ′ = FΣ<sub>0</sub>F<sup>⊤</sup> checks whether each blob’s shape followed it. Health, rendering and native-triangle checks complete the tier.</p>
+            <p>Each Gaussian is a small blob whose shape (its covariance) should stretch and turn with the material around it. A position-fitted deformation checks whether the requested motion happened; <math><mi mathvariant="normal">Σ</mi><mo lspace="0" rspace="0">′</mo><mo>=</mo><mi>F</mi><msub><mi mathvariant="normal">Σ</mi><mn>0</mn></msub><msup><mi>F</mi><mo>⊤</mo></msup></math> checks whether each blob’s shape followed it. Health, rendering and native-triangle checks complete the tier.</p>
             <p class="scene-ids">C1 affine · C2 shear and health · C3 render · C4 captured beam · C5–C8 triangle state</p>
           </article>
           <article class="protocol">
@@ -242,7 +242,7 @@
             <h2>GaussianFlesh runs every test.</h2>
             <p class="lead">Our reference system treats each Gaussian as both something you see and a piece of physical material. One shared solver (UL-MLS-MPM) lets a single object mix stiff, soft and plastic parts that push on each other naturally.</p>
             <ul class="list">
-              <li>Gaussian shapes follow the deformation: Σ<sub>p</sub> = F<sub>p</sub>Σ<sub>0,p</sub>F<sub>p</sub><sup>⊤</sup></li>
+              <li>Gaussian shapes follow the deformation: <math><msub><mi mathvariant="normal">Σ</mi><mi>p</mi></msub><mo>=</mo><msub><mi>F</mi><mi>p</mi></msub><msub><mi mathvariant="normal">Σ</mi><mrow><mn>0</mn><mo>,</mo><mi>p</mi></mrow></msub><msubsup><mi>F</mi><mi>p</mi><mo>⊤</mo></msubsup></math></li>
               <li>Rubber, metal, clay and melting materials</li>
               <li>Heat flow, temperature softening and melting</li>
             </ul>
