@@ -685,10 +685,6 @@ button.cell:hover,
   font-size: 0.92rem;
 }
 
-.cell-detail .hint {
-  color: var(--muted);
-}
-
 .cell-detail strong {
   color: var(--ink);
   font-weight: 600;

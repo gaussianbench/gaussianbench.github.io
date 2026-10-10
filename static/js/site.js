@@ -10,7 +10,6 @@
 
   var SCENES = {
     mech: {
-      note: "A1a/A1b report relative linear-momentum drift; A2, A3, A5 and M1 report relative error; A6 the larger COM position/velocity error; B1 the largest regional-strain or interface-traction error. A1a is a strict float32 precision diagnostic that no MPM entrant passes.",
       cols: [
         { id: "A1a", name: "Conservation, isolated body", metric: "relative momentum drift", tol: "< 10⁻⁶" },
         { id: "A1b", name: "Conservation, translating body", metric: "relative momentum drift", tol: "< 10⁻³" },
@@ -31,7 +30,6 @@
       }
     },
     rep: {
-      note: "C1 and C2-s report median kinematic / transport error. C2-s is INVALID when the prescribed shear is never realized, even though conditional covariance transport passes; C1 instead grades realization of its smaller affine map. C5–C8 are triangle-state scenes entered through GASP’s native representation.",
       cols: [
         { id: "C1", name: "Affine push-forward", metric: "median kinematic / transport error", tol: "kinematic < 5%, transport < 0.1%" },
         { id: "C2-s", name: "Peak shear", metric: "median kinematic / transport error", tol: "regime-guarded; same transport limits" },
@@ -113,16 +111,10 @@
 
   function initMatrix() {
     var body = document.getElementById("matrix-body");
-    var note = document.getElementById("matrix-note");
     var detail = document.getElementById("cell-detail");
     var tabs = Array.prototype.slice.call(document.querySelectorAll(".tabs [role=tab]"));
     if (!body) return;
     var current = null;
-
-    function hint() {
-      detail.textContent = "";
-      detail.appendChild(el("span", "hint", "Hover or tap a cell for the scene, its metric and the tolerance."));
-    }
 
     function show(cell, sys, col, kind, value) {
       if (current) current.classList.remove("is-current");
@@ -184,9 +176,8 @@
 
       body.textContent = "";
       body.appendChild(table);
-      note.textContent = set.note;
       current = null;
-      hint();
+      detail.textContent = "";
     }
 
     function select(tab) {
